@@ -2,12 +2,23 @@
 
 import { getUsers } from "@/services/users/getUsers";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [name, setName] = useState<string>("");
+  const [debounced, setDebounced] = useState<string>("");
 
-  const { data: users, isLoading } = getUsers(name);
+  const { data: users, isLoading } = getUsers(debounced);
+
+  useEffect(() => {
+    const handleDebounce = setTimeout(() => {
+      setDebounced(name);
+    }, 800);
+
+    return () => {
+      clearTimeout(handleDebounce);
+    };
+  }, [name]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center">
