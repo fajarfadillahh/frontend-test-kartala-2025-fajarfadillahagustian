@@ -1,5 +1,6 @@
 "use client";
 
+import Layout from "@/components/Layout";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getUsers } from "@/services/users/getUsers";
 import Link from "next/link";
@@ -25,33 +26,84 @@ export default function UsersPage() {
     router.replace(`?${params.toString()}`);
   }, [debounced, router]);
 
-  return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <div className="grid gap-8">
-        <input
-          type="text"
-          placeholder="Search user by name..."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-stone-200 p-2"
-        />
+  const tableHead = ["Name", "Email", "City", "Company Name", "Action"];
 
-        <ul className="grid list-disc gap-2 pl-4">
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : users?.length ? (
-            users?.map((user) => (
-              <li key={user.id}>
-                <Link href={`/users/${user.id}`} className="hover:underline">
-                  {user.name}
-                </Link>
-              </li>
-            ))
-          ) : (
-            <span>user tidak ditemukan!</span>
-          )}
-        </ul>
-      </div>
-    </div>
+  return (
+    <Layout className="relative pt-16 pb-32">
+      <section className="grid gap-16">
+        <h1 className="text-center text-3xl font-bold">Users data</h1>
+
+        <div className="grid gap-4">
+          <input
+            type="text"
+            placeholder="Search user by name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full max-w-[500px] rounded-xl border border-stone-400 bg-stone-200 p-2 text-stone-900 placeholder:font-medium placeholder:text-stone-500 placeholder:italic focus:outline-stone-900"
+          />
+
+          <div className="overflow-hidden rounded-xl border border-stone-400">
+            <table className="w-full table-fixed">
+              <thead>
+                <tr>
+                  {tableHead.map((th, index) => (
+                    <th
+                      key={index}
+                      className="border-r border-stone-400 bg-stone-300 p-3 text-left font-semibold last:border-none"
+                    >
+                      {th}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={5} className="px-3 py-16 text-center italic">
+                      Loading...
+                    </td>
+                  </tr>
+                ) : users?.length ? (
+                  users?.map((user) => (
+                    <tr
+                      key={user.id}
+                      className="border-t border-stone-400 font-normal"
+                    >
+                      <td className="border-r border-stone-400 p-3">
+                        {user.name}
+                      </td>
+                      <td className="border-r border-stone-400 p-3">
+                        {user.email}
+                      </td>
+                      <td className="border-r border-stone-400 p-3">
+                        {user.address.city}
+                      </td>
+                      <td className="border-r border-stone-400 p-3">
+                        {user.company.name}
+                      </td>
+                      <td className="p-3">
+                        <Link
+                          href={`/users/${user.id}`}
+                          className="rounded-xl bg-stone-200 p-[.5rem_1.3rem] text-stone-900 transition-all hover:bg-stone-400"
+                        >
+                          Detail
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="px-3 py-16 text-center italic">
+                      User not found!
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </Layout>
   );
 }
