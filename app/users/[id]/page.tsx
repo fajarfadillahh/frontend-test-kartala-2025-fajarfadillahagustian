@@ -54,7 +54,9 @@ export default function UserDetailsPage({
                     ["Company Name", user?.company.name],
                   ].map(([key, value], index) => (
                     <div key={index} className="grid">
-                      <span className="text-sm font-medium">{key}:</span>
+                      <span className="text-sm font-medium text-stone-600">
+                        {key}:
+                      </span>
                       <h3 className="truncate text-lg font-semibold">
                         {value}
                       </h3>
