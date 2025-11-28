@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function HomePage() {
+export default function UsersPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const defaultSearch = searchParams.get("name") ?? "";
@@ -36,12 +36,12 @@ export default function HomePage() {
           className="w-full rounded-xl border border-stone-200 p-2"
         />
 
-        <ul className="grid list-disc gap-2">
+        <ul className="grid list-disc gap-2 pl-4">
           {isLoading ? (
             <p>Loading...</p>
           ) : users?.length ? (
             users?.map((user) => (
-              <li key={user.id} className="pl-4">
+              <li key={user.id}>
                 <Link href={`/users/${user.id}`} className="hover:underline">
                   {user.name}
                 </Link>
