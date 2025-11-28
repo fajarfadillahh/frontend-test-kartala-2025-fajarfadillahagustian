@@ -14,7 +14,9 @@ export default function RootLayout({
         <title>Frontend Tes Kartala 2025 - Fajar Fadillah Agustian</title>
       </head>
 
-      <body className={`font-archivo antialiased`}>
+      <body
+        className={`font-archivo bg-stone-100 -tracking-wide text-stone-900 antialiased`}
+      >
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
