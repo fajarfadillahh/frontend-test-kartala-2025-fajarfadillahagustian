@@ -1,24 +1,29 @@
 "use client";
 
+import { useDebounce } from "@/hooks/useDebounce";
 import { getUsers } from "@/services/users/getUsers";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [name, setName] = useState<string>("");
-  const [debounced, setDebounced] = useState<string>("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const defaultSearch = searchParams.get("name") ?? "";
+
+  const [name, setName] = useState<string>(defaultSearch);
+  const { debounced } = useDebounce(name);
 
   const { data: users, isLoading } = getUsers(debounced);
 
   useEffect(() => {
-    const handleDebounce = setTimeout(() => {
-      setDebounced(name);
-    }, 800);
+    const params = new URLSearchParams();
+    if (debounced) {
+      params.set("name", debounced);
+    }
 
-    return () => {
-      clearTimeout(handleDebounce);
-    };
-  }, [name]);
+    router.replace(`?${params.toString()}`);
+  }, [debounced, router]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center">
