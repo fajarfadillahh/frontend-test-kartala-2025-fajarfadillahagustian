@@ -42,14 +42,14 @@ export default function UsersPage() {
             className="w-full max-w-[500px] rounded-xl border border-stone-400 bg-stone-200 p-2 text-stone-900 placeholder:font-medium placeholder:text-stone-500 placeholder:italic focus:outline-stone-900"
           />
 
-          <div className="overflow-hidden rounded-xl border border-stone-400">
-            <table className="w-full table-fixed">
+          <div className="overflow-hidden overflow-x-scroll rounded-xl border border-stone-400 xl:overflow-x-hidden">
+            <table className="w-full table-auto">
               <thead>
                 <tr>
                   {tableHead.map((th, index) => (
                     <th
                       key={index}
-                      className="border-r border-stone-400 bg-stone-300 p-3 text-left font-semibold last:border-none"
+                      className="min-w-[150px] border-r border-stone-400 bg-stone-300 p-3 text-left font-semibold last:border-none"
                     >
                       {th}
                     </th>
@@ -60,7 +60,10 @@ export default function UsersPage() {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={5} className="px-3 py-16 text-center italic">
+                    <td
+                      colSpan={5}
+                      className="px-3 py-16 italic lg:text-center"
+                    >
                       Loading...
                     </td>
                   </tr>
@@ -70,19 +73,24 @@ export default function UsersPage() {
                       key={user.id}
                       className="border-t border-stone-400 font-normal"
                     >
-                      <td className="border-r border-stone-400 p-3">
-                        {user.name}
+                      <td className="min-w-[250px] border-r border-stone-400 p-3">
+                        <Link
+                          href={`/users/${user.id}`}
+                          className="hover:underline"
+                        >
+                          {user.name}
+                        </Link>
                       </td>
-                      <td className="border-r border-stone-400 p-3">
+                      <td className="min-w-[250px] border-r border-stone-400 p-3">
                         {user.email}
                       </td>
-                      <td className="border-r border-stone-400 p-3">
+                      <td className="min-w-[250px] border-r border-stone-400 p-3">
                         {user.address.city}
                       </td>
-                      <td className="border-r border-stone-400 p-3">
+                      <td className="min-w-[250px] border-r border-stone-400 p-3">
                         {user.company.name}
                       </td>
-                      <td className="p-3">
+                      <td className="min-w-[150px] p-3">
                         <Link
                           href={`/users/${user.id}`}
                           className="rounded-xl bg-stone-200 p-[.5rem_1.3rem] text-stone-900 transition-all hover:bg-stone-400"
@@ -94,7 +102,10 @@ export default function UsersPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} className="px-3 py-16 text-center italic">
+                    <td
+                      colSpan={5}
+                      className="px-3 py-16 italic lg:text-center"
+                    >
                       User not found!
                     </td>
                   </tr>
